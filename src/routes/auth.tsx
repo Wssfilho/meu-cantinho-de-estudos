@@ -114,8 +114,8 @@ function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas p-0 sm:p-8 lg:p-12">
-      <div className="mx-auto grid min-h-screen max-w-5xl overflow-hidden bg-shell shadow-shell sm:min-h-[calc(100vh-4rem)] sm:rounded-4xl lg:min-h-[calc(100vh-6rem)] lg:grid-cols-2">
+    <div className="min-h-dvh bg-shell">
+      <div className="mx-auto grid min-h-dvh w-full overflow-hidden bg-shell lg:grid-cols-2">
         <div className="relative hidden flex-col justify-between bg-welcome p-10 lg:flex">
           <Brand to="/" />
           <div>

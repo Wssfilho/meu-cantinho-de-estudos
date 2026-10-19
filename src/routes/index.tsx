@@ -55,8 +55,8 @@ function Index() {
   );
 
   return (
-    <div className="h-dvh overflow-hidden bg-canvas p-0 sm:p-6 lg:p-8">
-      <div className="mx-auto flex h-full max-w-6xl flex-col overflow-hidden bg-shell shadow-shell sm:rounded-4xl">
+    <div className="h-dvh overflow-hidden bg-shell">
+      <div className="mx-auto flex h-full max-w-6xl flex-col overflow-hidden bg-shell">
         <header className="flex shrink-0 items-center justify-between px-5 py-4 sm:px-10 sm:py-5">
           <Brand to="/" />
           <Button asChild variant="soft">

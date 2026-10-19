@@ -20,7 +20,7 @@ function SidebarContentInner({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="px-7 pt-7 pb-8">
+      <div className="px-7 pt-6 pb-6">
         <Brand />
       </div>
       <nav className="flex flex-col gap-1">
@@ -32,7 +32,7 @@ function SidebarContentInner({ onNavigate }: { onNavigate?: () => void }) {
               to={item.to}
               onClick={onNavigate}
               className={cn(
-                "relative flex items-center gap-4 px-9 py-4 text-[15px] font-semibold transition-colors",
+                "relative flex items-center gap-4 px-9 py-3 text-[15px] font-semibold transition-colors",
                 active
                   ? "bg-sidebar-accent text-sidebar-accent-foreground"
                   : "text-sidebar-foreground hover:text-sidebar-accent-foreground",
@@ -46,16 +46,23 @@ function SidebarContentInner({ onNavigate }: { onNavigate?: () => void }) {
         })}
         <button
           onClick={signOut}
-          className="flex items-center gap-4 px-9 py-4 text-left text-[15px] font-semibold text-sidebar-foreground transition-colors hover:text-sidebar-accent-foreground"
+          className="flex items-center gap-4 px-9 py-3 text-left text-[15px] font-semibold text-sidebar-foreground transition-colors hover:text-sidebar-accent-foreground"
         >
           <LogOut className="size-5" strokeWidth={1.8} />
           Sair
         </button>
       </nav>
 
-      <div className="mt-auto p-6">
-        <div className="rounded-2xl bg-sidebar-accent px-5 pb-5 pt-2 text-center">
-          <img src={checklistImg} alt="" width={1024} height={1024} loading="lazy" className="mx-auto h-28 w-auto" />
+      <div className="mt-auto p-5">
+        <div className="rounded-2xl bg-sidebar-accent px-5 pb-5 pt-4 text-center">
+          <img
+            src={checklistImg}
+            alt=""
+            width={1024}
+            height={1024}
+            loading="lazy"
+            className="mx-auto h-24 w-auto [@media(max-height:760px)]:hidden"
+          />
           <p className="mt-2 text-[13px] leading-snug text-muted-foreground">
             Divida cada matéria em conteúdos pequenos
           </p>
@@ -74,20 +81,23 @@ export function AppShell() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-canvas lg:p-8 xl:p-12">
-      <div className="mx-auto flex min-h-screen max-w-[1480px] overflow-hidden bg-background shadow-shell lg:min-h-[calc(100vh-4rem)] lg:rounded-4xl xl:min-h-[calc(100vh-6rem)]">
-        <aside className="hidden w-64 shrink-0 bg-sidebar lg:block">
+    <div className="h-dvh overflow-hidden bg-background">
+      <div className="mx-auto flex h-full w-full overflow-hidden bg-background">
+        <aside className="hidden w-64 shrink-0 overflow-y-auto bg-sidebar lg:block">
           <SidebarContentInner />
         </aside>
 
-        <div className="flex min-w-0 flex-1 flex-col">
-          <div className="flex items-center justify-between border-b bg-shell px-5 py-3 lg:hidden">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+          <div className="flex shrink-0 items-center justify-between border-b bg-shell px-5 py-3 lg:hidden">
             <Brand />
             <Button variant="ghost" size="icon" onClick={() => setOpen(true)} aria-label="Abrir menu">
               <Menu className="size-5" />
             </Button>
           </div>
-          <Outlet />
+          {/* Páginas maiores que a tela rolam aqui dentro, não na janela. */}
+          <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+            <Outlet />
+          </div>
         </div>
       </div>
 

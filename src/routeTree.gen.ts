@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedMateriasIndexRouteImport } from './routes/_authenticated/materias.index'
+import { Route as AuthenticatedMateriasSubjectIdRouteImport } from './routes/_authenticated/materias.$subjectId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,6 +25,12 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedConfiguracoesRoute =
+  AuthenticatedConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -34,34 +42,54 @@ const AuthenticatedMateriasIndexRoute =
     path: '/materias/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMateriasSubjectIdRoute =
+  AuthenticatedMateriasSubjectIdRouteImport.update({
+    id: '/materias/$subjectId',
+    path: '/materias/$subjectId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/materias/$subjectId': typeof AuthenticatedMateriasSubjectIdRoute
   '/materias/': typeof AuthenticatedMateriasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/materias/$subjectId': typeof AuthenticatedMateriasSubjectIdRoute
   '/materias': typeof AuthenticatedMateriasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/materias/$subjectId': typeof AuthenticatedMateriasSubjectIdRoute
   '/_authenticated/materias/': typeof AuthenticatedMateriasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/materias/'
+  fullPaths:
+    | '/'
+    | '/configuracoes'
+    | '/dashboard'
+    | '/materias/$subjectId'
+    | '/materias/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/materias'
+  to:
+    '/' | '/configuracoes' | '/dashboard' | '/materias/$subjectId' | '/materias'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/_authenticated/configuracoes'
     | '/_authenticated/dashboard'
+    | '/_authenticated/materias/$subjectId'
     | '/_authenticated/materias/'
   fileRoutesById: FileRoutesById
 }
@@ -86,6 +114,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/configuracoes': {
+      id: '/_authenticated/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -100,16 +135,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMateriasIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/materias/$subjectId': {
+      id: '/_authenticated/materias/$subjectId'
+      path: '/materias/$subjectId'
+      fullPath: '/materias/$subjectId'
+      preLoaderRoute: typeof AuthenticatedMateriasSubjectIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedMateriasSubjectIdRoute: typeof AuthenticatedMateriasSubjectIdRoute
   AuthenticatedMateriasIndexRoute: typeof AuthenticatedMateriasIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedMateriasSubjectIdRoute: AuthenticatedMateriasSubjectIdRoute,
   AuthenticatedMateriasIndexRoute: AuthenticatedMateriasIndexRoute,
 }
 

@@ -85,10 +85,13 @@ function AuthPage() {
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      toast.error(
-        msg.includes("Invalid login") ? "E-mail ou senha incorretos" : "Não foi possível continuar",
-        { description: msg.includes("Invalid login") ? undefined : msg },
-      );
+      if (msg.includes("Invalid login")) toast.error("E-mail ou senha incorretos");
+      else if (msg.toLowerCase().includes("weak") || msg.toLowerCase().includes("pwned"))
+        toast.error("Senha muito fraca", { description: "Essa senha é conhecida e fácil de adivinhar. Escolha outra." });
+      else if (msg.includes("Email not confirmed"))
+        toast.error("Confirme seu e-mail", { description: "Clique no link que enviamos para o seu e-mail." });
+      else if (msg.includes("already registered")) toast.error("Este e-mail já tem uma conta", { description: "Tente entrar." });
+      else toast.error("Não foi possível continuar", { description: msg });
     } finally {
       setLoading(false);
     }

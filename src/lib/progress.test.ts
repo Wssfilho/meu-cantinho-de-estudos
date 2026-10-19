@@ -34,7 +34,7 @@ describe("weekly activity", () => {
       wednesday,
     );
     expect(days[0]).toEqual({ day: "Seg", adicionados: 2, concluidos: 0 });
-    expect(days[2].concluidos).toBe(1);
+    expect(days[2]?.concluidos).toBe(1);
     expect(days.reduce((n, d) => n + d.concluidos, 0)).toBe(1);
   });
 });

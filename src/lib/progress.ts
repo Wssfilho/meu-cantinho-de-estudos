@@ -38,9 +38,9 @@ export function weeklyActivity(topics: TopicLike[], now: Date = new Date()) {
 
   for (const t of topics) {
     const a = bucket(t.created_at);
-    if (a !== null) days[a].adicionados += 1;
+    if (a !== null) days[a]!.adicionados += 1;
     const c = t.done ? bucket(t.completed_at) : null;
-    if (c !== null) days[c].concluidos += 1;
+    if (c !== null) days[c]!.concluidos += 1;
   }
   return days;
 }

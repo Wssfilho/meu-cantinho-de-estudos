@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { Home, Library, LogOut, Menu, Settings, Timer } from "lucide-react";
 import { Brand } from "@/components/brand";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { useSignOut } from "@/hooks/use-sign-out";
@@ -10,7 +11,7 @@ import checklistImg from "@/assets/checklist.png";
 
 const NAV = [
   { to: "/dashboard", label: "Painel", icon: Home },
-  { to: "/materias", label: "Matérias", icon: Library },
+  { to: "/materias", label: "Matérias", icon: Library, badge: "Update coming soon" },
   { to: "/pomodoro", label: "Pomodoro", icon: Timer },
   { to: "/configuracoes", label: "Configurações", icon: Settings },
 ] as const;
@@ -27,29 +28,43 @@ function SidebarContentInner({ onNavigate }: { onNavigate?: () => void }) {
       <nav className="flex flex-col gap-1">
         {NAV.map((item) => {
           const active = pathname === item.to || pathname.startsWith(item.to + "/");
+          const hasBadge = "badge" in item && Boolean(item.badge);
           return (
             <Link
               key={item.to}
               to={item.to}
               onClick={onNavigate}
               className={cn(
-                "relative flex items-center gap-4 px-9 py-3 text-[15px] font-semibold transition-colors",
+                "relative flex items-center gap-3 px-7 py-3 text-[15px] font-semibold transition-colors",
                 active
                   ? "bg-sidebar-accent text-sidebar-accent-foreground"
                   : "text-sidebar-foreground hover:text-sidebar-accent-foreground",
               )}
             >
-              {active && <span className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-primary" />}
-              <item.icon className={cn("size-5", active && "text-primary")} strokeWidth={1.8} />
-              {item.label}
+              {active && (
+                <span className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-primary" />
+              )}
+              <item.icon
+                className={cn("size-5 shrink-0", active && "text-primary")}
+                strokeWidth={1.8}
+              />
+              <span className="shrink-0">{item.label}</span>
+              {hasBadge && (
+                <Badge
+                  variant="secondary"
+                  className="rounded-full border border-primary/10 bg-primary-soft/80 px-2 py-0.5 text-[10px] font-semibold tracking-tight text-primary whitespace-nowrap shadow-none"
+                >
+                  {item.badge}
+                </Badge>
+              )}
             </Link>
           );
         })}
         <button
           onClick={signOut}
-          className="flex items-center gap-4 px-9 py-3 text-left text-[15px] font-semibold text-sidebar-foreground transition-colors hover:text-sidebar-accent-foreground"
+          className="flex items-center gap-3 px-7 py-3 text-left text-[15px] font-semibold text-sidebar-foreground transition-colors hover:text-sidebar-accent-foreground"
         >
-          <LogOut className="size-5" strokeWidth={1.8} />
+          <LogOut className="size-5 shrink-0" strokeWidth={1.8} />
           Sair
         </button>
       </nav>
@@ -84,14 +99,19 @@ export function AppShell() {
   return (
     <div className="h-dvh overflow-hidden bg-background">
       <div className="mx-auto flex h-full w-full overflow-hidden bg-background">
-        <aside className="hidden w-64 shrink-0 overflow-y-auto bg-sidebar lg:block">
+        <aside className="hidden w-72 shrink-0 overflow-y-auto bg-sidebar lg:block">
           <SidebarContentInner />
         </aside>
 
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           <div className="flex shrink-0 items-center justify-between border-b bg-shell px-5 py-3 lg:hidden">
             <Brand />
-            <Button variant="ghost" size="icon" onClick={() => setOpen(true)} aria-label="Abrir menu">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setOpen(true)}
+              aria-label="Abrir menu"
+            >
               <Menu className="size-5" />
             </Button>
           </div>

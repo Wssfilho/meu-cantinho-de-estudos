@@ -55,38 +55,52 @@ function Index() {
   );
 
   return (
-    <div className="min-h-screen bg-canvas p-0 sm:p-8 lg:p-12">
-      <div className="mx-auto flex min-h-screen max-w-6xl flex-col overflow-hidden bg-shell shadow-shell sm:min-h-[calc(100vh-4rem)] sm:rounded-4xl lg:min-h-[calc(100vh-6rem)]">
-        <header className="flex items-center justify-between px-6 py-6 sm:px-10">
+    <div className="h-dvh overflow-hidden bg-canvas p-0 sm:p-6 lg:p-8">
+      <div className="mx-auto flex h-full max-w-6xl flex-col overflow-hidden bg-shell shadow-shell sm:rounded-4xl">
+        <header className="flex shrink-0 items-center justify-between px-5 py-4 sm:px-10 sm:py-5">
           <Brand to="/" />
           <Button asChild variant="soft">
             <Link to={signedIn ? "/dashboard" : "/auth"}>{signedIn ? "Painel" : "Entrar"}</Link>
           </Button>
         </header>
 
-        <main className="flex flex-1 flex-col justify-center px-6 pb-12 sm:px-10">
-          <section className="grid items-center gap-10 rounded-3xl bg-welcome px-8 py-12 sm:px-12 lg:grid-cols-[1.1fr_1fr]">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">Seu painel de estudos</p>
-              <h1 className="mt-4 text-4xl font-extrabold leading-[1.1] text-welcome-foreground sm:text-5xl">
+        <main className="flex min-h-0 flex-1 flex-col gap-4 px-5 pb-5 sm:gap-6 sm:px-10 sm:pb-8">
+          <section className="flex min-h-0 flex-1 flex-col gap-4 rounded-3xl bg-welcome px-6 py-6 sm:px-12 sm:py-8 lg:grid lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-10">
+            <div className="shrink-0">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary sm:text-sm">
+                Seu painel de estudos
+              </p>
+              <h1 className="mt-3 text-3xl font-extrabold leading-[1.1] text-welcome-foreground sm:mt-4 sm:text-4xl lg:text-5xl">
                 Saiba exatamente quanto você já estudou.
               </h1>
-              <p className="mt-5 max-w-md text-lg text-foreground/70">
-                Cadastre suas matérias, divida em conteúdos e acompanhe seu progresso em um painel simples.
+              <p className="mt-3 max-w-md text-base text-foreground/70 sm:mt-5 sm:text-lg">
+                Cadastre suas matérias, divida em conteúdos e acompanhe seu progresso em um painel
+                simples.
               </p>
-              <div className="mt-8">{cta}</div>
+              <div className="mt-5 sm:mt-8">{cta}</div>
             </div>
-            <img src={welcomeImg} alt="Estudante lendo um caderno" width={1024} height={1024} className="mx-auto h-72 w-auto lg:h-96" />
+            {/* A ilustração ocupa só o espaço restante, encolhendo em telas baixas. */}
+            <div className="relative min-h-0 flex-1 lg:h-full">
+              <img
+                src={welcomeImg}
+                alt="Estudante lendo um caderno"
+                width={1024}
+                height={1024}
+                className="absolute inset-0 size-full object-contain"
+              />
+            </div>
           </section>
 
-          <section className="mt-8 grid gap-5 sm:grid-cols-3">
+          <section className="grid shrink-0 grid-cols-3 gap-3 sm:gap-5">
             {FEATURES.map((f) => (
-              <div key={f.title} className="rounded-2xl border bg-card p-6">
-                <span className="grid size-11 place-items-center rounded-xl bg-primary-soft text-primary">
-                  <f.icon className="size-5" />
+              <div key={f.title} className="rounded-2xl border bg-card p-3 sm:p-5">
+                <span className="grid size-9 place-items-center rounded-xl bg-primary-soft text-primary sm:size-11">
+                  <f.icon className="size-4 sm:size-5" />
                 </span>
-                <h2 className="mt-4 font-bold">{f.title}</h2>
-                <p className="mt-1 text-sm text-muted-foreground">{f.text}</p>
+                <h2 className="mt-2 text-xs font-bold leading-tight sm:mt-3 sm:text-base">
+                  {f.title}
+                </h2>
+                <p className="mt-1 hidden text-sm text-muted-foreground sm:block">{f.text}</p>
               </div>
             ))}
           </section>

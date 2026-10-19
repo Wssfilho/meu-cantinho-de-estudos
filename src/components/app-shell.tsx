@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { Home, Library, LogOut, Menu, Settings } from "lucide-react";
+import { Home, Library, LogOut, Menu, Settings, Timer } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
@@ -11,6 +11,7 @@ import checklistImg from "@/assets/checklist.png";
 const NAV = [
   { to: "/dashboard", label: "Painel", icon: Home },
   { to: "/materias", label: "Matérias", icon: Library },
+  { to: "/pomodoro", label: "Pomodoro", icon: Timer },
   { to: "/configuracoes", label: "Configurações", icon: Settings },
 ] as const;
 

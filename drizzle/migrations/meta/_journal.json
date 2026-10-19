@@ -8,6 +8,13 @@
       "when": 1792417695149,
       "tag": "0000_study_app_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792425600000,
+      "tag": "0001_pomodoro_sessions",
+      "breakpoints": true
     }
   ]
 }

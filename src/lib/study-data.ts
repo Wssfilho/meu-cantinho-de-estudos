@@ -1,6 +1,7 @@
 import { queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { validStudySession, type StudySessionInput } from "@/lib/pomodoro";
 
 export type Topic = {
   id: string;
@@ -21,6 +22,50 @@ export type Subject = {
 };
 
 export type Profile = { id: string; display_name: string | null };
+
+export type StudySession = StudySessionInput & {
+  user_id: string;
+  created_at: string;
+};
+
+export const studySessionsQuery = (userId: string) =>
+  queryOptions({
+    queryKey: ["study-sessions", userId],
+    queryFn: async (): Promise<StudySession[]> => {
+      const sessions: StudySession[] = [];
+      // Fetch every page so totals remain correct beyond PostgREST's row limit.
+      for (let offset = 0; ; offset += 1000) {
+        const { data, error } = await supabase
+          .from("study_sessions")
+          .select(
+            "id, user_id, started_at, ended_at, duration_seconds, target_seconds, completed, created_at",
+          )
+          .eq("user_id", userId)
+          .order("ended_at", { ascending: false })
+          .order("id", { ascending: false })
+          .range(offset, offset + 999);
+        if (error) throw error;
+        sessions.push(...data);
+        if (data.length < 1000) return sessions;
+      }
+    },
+  });
+
+export function useSaveStudySession(userId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (session: StudySessionInput) => {
+      if (!validStudySession(session)) throw new Error("Sessão de estudo inválida.");
+      const { error } = await supabase
+        .from("study_sessions")
+        .upsert({ ...session, user_id: userId }, { onConflict: "id", ignoreDuplicates: true });
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["study-sessions", userId] }),
+    // Keep failures in the timer's persistent queue; the UI offers an explicit retry.
+    retry: false,
+  });
+}
 
 const TOPIC_FIELDS = "id, subject_id, title, done, completed_at, created_at";
 
@@ -51,7 +96,10 @@ export const subjectsQuery = () =>
         .select(`id, name, color, created_at, updated_at, topics(${TOPIC_FIELDS})`)
         .order("created_at", { ascending: true });
       if (error) throw error;
-      return (data ?? []).map((s) => ({ ...s, topics: sortTopics(s.topics as Topic[]) }));
+      return (data ?? []).map((s) => ({
+        ...s,
+        topics: sortTopics(s.topics as Topic[]),
+      }));
     },
   });
 
@@ -150,7 +198,10 @@ export function useToggleTopic() {
   const invalidate = useInvalidateSubjects();
   return useMutation({
     mutationFn: async (input: { id: string; done: boolean }) => {
-      const { error } = await supabase.from("topics").update({ done: input.done }).eq("id", input.id);
+      const { error } = await supabase
+        .from("topics")
+        .update({ done: input.done })
+        .eq("id", input.id);
       if (error) throw error;
     },
     onSuccess: invalidate,

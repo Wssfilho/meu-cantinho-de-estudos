@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedPomodoroRouteImport } from './routes/_authenticated/pomodoro'
 import { Route as AuthenticatedMateriasIndexRouteImport } from './routes/_authenticated/materias.index'
 import { Route as AuthenticatedMateriasSubjectIdRouteImport } from './routes/_authenticated/materias.$subjectId'
 
@@ -48,6 +49,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPomodoroRoute = AuthenticatedPomodoroRouteImport.update({
+  id: '/pomodoro',
+  path: '/pomodoro',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMateriasIndexRoute =
   AuthenticatedMateriasIndexRouteImport.update({
     id: '/materias/',
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/pomodoro': typeof AuthenticatedPomodoroRoute
   '/materias/$subjectId': typeof AuthenticatedMateriasSubjectIdRoute
   '/materias/': typeof AuthenticatedMateriasIndexRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/pomodoro': typeof AuthenticatedPomodoroRoute
   '/materias/$subjectId': typeof AuthenticatedMateriasSubjectIdRoute
   '/materias': typeof AuthenticatedMateriasIndexRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/pomodoro': typeof AuthenticatedPomodoroRoute
   '/_authenticated/materias/$subjectId': typeof AuthenticatedMateriasSubjectIdRoute
   '/_authenticated/materias/': typeof AuthenticatedMateriasIndexRoute
 }
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/configuracoes'
     | '/dashboard'
+    | '/pomodoro'
     | '/materias/$subjectId'
     | '/materias/'
   fileRoutesByTo: FileRoutesByTo
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/configuracoes'
     | '/dashboard'
+    | '/pomodoro'
     | '/materias/$subjectId'
     | '/materias'
   id:
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/configuracoes'
     | '/_authenticated/dashboard'
+    | '/_authenticated/pomodoro'
     | '/_authenticated/materias/$subjectId'
     | '/_authenticated/materias/'
   fileRoutesById: FileRoutesById
@@ -172,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/pomodoro': {
+      id: '/_authenticated/pomodoro'
+      path: '/pomodoro'
+      fullPath: '/pomodoro'
+      preLoaderRoute: typeof AuthenticatedPomodoroRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/materias/': {
       id: '/_authenticated/materias/'
       path: '/materias'
@@ -192,6 +211,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPomodoroRoute: typeof AuthenticatedPomodoroRoute
   AuthenticatedMateriasSubjectIdRoute: typeof AuthenticatedMateriasSubjectIdRoute
   AuthenticatedMateriasIndexRoute: typeof AuthenticatedMateriasIndexRoute
 }
@@ -199,6 +219,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPomodoroRoute: AuthenticatedPomodoroRoute,
   AuthenticatedMateriasSubjectIdRoute: AuthenticatedMateriasSubjectIdRoute,
   AuthenticatedMateriasIndexRoute: AuthenticatedMateriasIndexRoute,
 }
